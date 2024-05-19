@@ -15,6 +15,7 @@ from dgl.dataloading import GraphDataLoader
 from tqdm import trange
 
 import myNet
+from myNet.graph.compute import compute_pair_vector_and_distance
 
 if TYPE_CHECKING:
     from myNet.graph.converters import GraphConverter
