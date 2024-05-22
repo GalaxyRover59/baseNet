@@ -67,13 +67,14 @@ train_loader, val_loader, test_loader = myDataLoader(
     num_workers=0,
 )
 
+for batch in train_loader:
+    g, lat, state_attr, labels = batch
+    # print(g)
+    break
+
 model = MLPNet([128, 1024, 100], dropout=0.05)
-print(model)
-
-# test = MLP([128, 1024, 100])
-# print(test)
-
-# test = MLPNet([128, 1024, 100])
-# print(test)
+out = model(g)
+print(f'length: {len(out)}')
+print(out)
 
 # print(myNet.int_th)

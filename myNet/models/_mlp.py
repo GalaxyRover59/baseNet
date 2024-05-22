@@ -31,7 +31,9 @@ class MLPNet(nn.Module):
             }
         )
         self.dropout = nn.Dropout(dropout) if dropout else None
-        self.dims = dims
+        self.init0 = MLP([3, dims[0]])
+        self.init1 = MLP([dims[-1], dims[0]])
+        self.out = MLP([dims[0], 1])
 
     def forward(
             self,
@@ -48,13 +50,14 @@ class MLPNet(nn.Module):
         :param return_all_layer_output:
         :return:
         """
-        bond_vec, bond_dist = compute_pair_vector_and_distance(g)
-        g.edata["bond_vec"] = bond_vec
-        g.edata["bond_dist"] = bond_dist
-        bond_embed = MLP([len(bond_vec), self.dims[0]])
+        bond_vec = g.edata["bond_vec"]
+        bond_dist = g.edata["bond_dist"]
+        bond_embed = self.init0(bond_vec)
         for block in self.MLPblock:
             out = block(bond_embed)
-            bond_vec = MLP([len(out), self.dims[0]])
+            bond_embed = self.init1(out)
             if self.dropout:
-                bond_vec = self.dropout(bond_vec)
-        out = torch.squeeze(MLP([self.dims[0], 1]))
+                bond_embed = self.dropout(bond_embed)
+        out = torch.squeeze(self.out(bond_embed))
+        
+        return out
