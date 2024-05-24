@@ -2,20 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d60c3970-ee06-480e-ba9f-9a6d87700aeb" name="Changes" comment="update MLPNet forward function">
+      <change afterPath="$PROJECT_DIR$/myNet/utils/training.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/myNet.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/myNet.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/remote-mappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/remote-mappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/test-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/test-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myNet/data/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/data/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myNet/data/transformer.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/data/transformer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myNet/graph/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/graph/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myNet/graph/ase.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/graph/ase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myNet/graph/converters.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/graph/converters.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myNet/models/_mlp.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/models/_mlp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/test.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +114,8 @@
       <workItem from="1716172345763" duration="1757000" />
       <workItem from="1716277622418" duration="1258000" />
       <workItem from="1716363479842" duration="832000" />
-      <workItem from="1716366217915" duration="343000" />
+      <workItem from="1716366217915" duration="65313000" />
+      <workItem from="1716515116158" duration="2626000" />
     </task>
     <task id="LOCAL-00001" summary="update MLPNet forward function">
       <created>1716135101048</created>
@@ -157,6 +148,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/myNet$_mlp.coverage" NAME="_mlp Coverage Results" MODIFIED="1715271759338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/myNet/models" />
-    <SUITE FILE_PATH="coverage/myNet$main.coverage" NAME="main Coverage Results" MODIFIED="1716363888558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/myNet$main.coverage" NAME="main Coverage Results" MODIFIED="1716366678971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

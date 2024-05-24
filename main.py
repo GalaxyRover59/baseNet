@@ -8,7 +8,6 @@ from torch import nn
 import dgl
 from dgl.data.utils import split_dataset
 
-from myNet.layers import MLP
 from myNet.models import MLPNet
 from myNet.graph.data import myDataset, myDataLoader, collate_fn
 from myNet.graph.converters import get_element_list, Molecule2Graph
