@@ -11,8 +11,6 @@ import torch.nn.functional as F
 import torchmetrics
 from torch import nn
 
-from matgl.apps.pes import Potential
-
 if TYPE_CHECKING:
     import dgl
     import numpy as np

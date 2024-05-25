@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d60c3970-ee06-480e-ba9f-9a6d87700aeb" name="Changes" comment="update MLPNet forward function">
-      <change afterPath="$PROJECT_DIR$/myNet/utils/training.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myNet/models/_mlp.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/models/_mlp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myNet/utils/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/utils/training.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +115,8 @@
       <workItem from="1716277622418" duration="1258000" />
       <workItem from="1716363479842" duration="832000" />
       <workItem from="1716366217915" duration="65313000" />
-      <workItem from="1716515116158" duration="2626000" />
+      <workItem from="1716515116158" duration="5894000" />
+      <workItem from="1716604796521" duration="4013000" />
     </task>
     <task id="LOCAL-00001" summary="update MLPNet forward function">
       <created>1716135101048</created>
@@ -148,6 +149,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/myNet$_mlp.coverage" NAME="_mlp Coverage Results" MODIFIED="1715271759338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/myNet/models" />
-    <SUITE FILE_PATH="coverage/myNet$main.coverage" NAME="main Coverage Results" MODIFIED="1716366678971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/myNet$main.coverage" NAME="main Coverage Results" MODIFIED="1716623722218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

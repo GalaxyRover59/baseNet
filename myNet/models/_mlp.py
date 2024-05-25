@@ -9,8 +9,8 @@ from torch import nn
 from myNet.graph.compute import compute_pair_vector_and_distance
 from myNet.layers import MLP
 
-if TYPE_CHECKING:
-    import dgl
+# if TYPE_CHECKING:
+import dgl
 
 
 class MLPNet(nn.Module):
@@ -50,9 +50,7 @@ class MLPNet(nn.Module):
         :param return_all_layer_output:
         :return:
         """
-        bond_vec = g.edata["bond_vec"]
-        bond_dist = g.edata["bond_dist"]
-        bond_embed = self.init0(bond_vec)
+        bond_embed = self.init0(dgl.readout_edges(g, "bond_vec", op='mean'))
         for block in self.MLPblock:
             out = block(bond_embed)
             bond_embed = self.init1(out)

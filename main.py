@@ -5,12 +5,16 @@ from tqdm import tqdm
 
 import torch
 from torch import nn
+import pytorch_lightning as pl
 import dgl
 from dgl.data.utils import split_dataset
+from pytorch_lightning.loggers import CSVLogger
+from pytorch_lightning.callbacks import ModelCheckpoint
 
 from myNet.models import MLPNet
 from myNet.graph.data import myDataset, myDataLoader, collate_fn
 from myNet.graph.converters import get_element_list, Molecule2Graph
+from myNet.utils.training import ModelLightningModule
 
 data = pd.read_csv("qm9_sample.csv")
 
@@ -66,14 +70,15 @@ train_loader, val_loader, test_loader = myDataLoader(
     num_workers=0,
 )
 
-for batch in train_loader:
-    g, lat, state_attr, labels = batch
-    # print(g)
-    break
-
 model = MLPNet([128, 1024, 100], dropout=0.05)
-out = model(g)
-print(f'length: {len(out)}')
-print(out)
+lit_module = ModelLightningModule(model=model)
+logger = CSVLogger("./logs", name="myNet_test")
+checkpoint_callback = ModelCheckpoint(monitor='val_Total_Loss', save_last=True)
+# early_stopping = EarlyStopping(monitor='val_Total_Loss', min_delta=0.0, patience=3, mode='min')
+trainer = pl.Trainer(max_epochs=4,
+                     accelerator="cpu",
+                     logger=logger,
+                     callbacks=[checkpoint_callback])
+trainer.fit(model=lit_module, train_dataloaders=train_loader, val_dataloaders=val_loader)
 
 # print(myNet.int_th)
