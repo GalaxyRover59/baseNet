@@ -11,12 +11,20 @@ import torch
 import myNet
 
 
-def compute_pair_vector_and_distance(g: dgl.DGLGraph):
+def compute_pair_vector_and_distance(g: dgl.DGLGraph) -> tuple[torch.Tensor, torch.Tensor]:
     """Calculate bond vectors and distances using dgl graphs.
 
+    Args:
+        g: dgl Graph
+
+    Returns:
+        bond distance between two atoms, vector from src node to dst node
+    """
+    """
+
     :param g: DGL graph
-    :return: bond_vec (torch.tensor): bond distance between two atoms
-             bond_dist (torch.tensor): vector from src node to dst node
+    :returns: bond_vec : 
+             bond_dist (torch.tensor): 
     """
     dst_pos = g.ndata["pos"][g.edges()[1].type(torch.long)] + g.edata["pbc_offshift"]
     src_pos = g.ndata["pos"][g.edges()[0].type(torch.long)]

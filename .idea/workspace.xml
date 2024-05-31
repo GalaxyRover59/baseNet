@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d60c3970-ee06-480e-ba9f-9a6d87700aeb" name="Changes" comment="update MLPNet forward function" />
+    <list default="true" id="d60c3970-ee06-480e-ba9f-9a6d87700aeb" name="Changes" comment="update MLPNet forward function">
+      <change afterPath="$PROJECT_DIR$/myNet/ext/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myNet/graph/compute.py" beforeDir="false" afterPath="$PROJECT_DIR$/myNet/graph/compute.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -112,7 +116,7 @@
       <workItem from="1716366217915" duration="65313000" />
       <workItem from="1716515116158" duration="5894000" />
       <workItem from="1716604796521" duration="4527000" />
-      <workItem from="1717140506023" duration="4390000" />
+      <workItem from="1717140506023" duration="5011000" />
     </task>
     <task id="LOCAL-00001" summary="update MLPNet forward function">
       <created>1716135101048</created>
