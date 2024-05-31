@@ -82,3 +82,9 @@ trainer = pl.Trainer(max_epochs=4,
 trainer.fit(model=lit_module, train_dataloaders=train_loader, val_dataloaders=val_loader)
 
 # print(myNet.int_th)
+
+from myNet.graph.data import myDataLoader
+from myNet.graph.compute import compute_pair_vector_and_distance
+compute_pair_vector_and_distance()
+myDataLoader()
+MLPNet()

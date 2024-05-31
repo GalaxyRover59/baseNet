@@ -23,9 +23,12 @@ class myNetLightningModuleMixin:
     def training_step(self, batch: tuple, batch_idx: int):
         """Training step.
 
-        :param batch: Data batch
-        :param batch_idx: Batch index
-        :return: Total loss
+        Args:
+            batch: Data batch
+            batch_idx: Batch index
+
+        Returns:
+            Total loss
         """
         results, batch_size = self.step(batch)  # type: ignore
         self.log_dict(  # type: ignore
@@ -47,9 +50,12 @@ class myNetLightningModuleMixin:
     def validation_step(self, batch: tuple, batch_idx: int):
         """Validation step.
 
-        :param batch: Data batch
-        :param batch_idx: Batch index
-        :return: Total loss
+        Args:
+            batch: Data batch
+            batch_idx: Batch index
+
+        Returns:
+            Total loss
         """
         results, batch_size = self.step(batch)  # type: ignore
         self.log_dict(  # type: ignore
@@ -65,9 +71,12 @@ class myNetLightningModuleMixin:
     def test_step(self, batch: tuple, batch_idx: int):
         """Test step.
 
-        :param batch: Data batch
-        :param batch_idx: Batch index
-        :return: Test result
+        Args:
+            batch: Data batch
+            batch_idx: Batch index
+
+        Returns:
+            Test result
         """
         torch.set_grad_enabled(True)
         results, batch_size = self.step(batch)  # type: ignore
@@ -104,8 +113,9 @@ class myNetLightningModuleMixin:
     def on_test_model_eval(self, *args, **kwargs):
         """Executed on model testing.
 
-        :param args: Pass-through
-        :param kwargs: Pass-through
+        Args:
+            *args: Pass-through
+            **kwargs: Pass-through
         """
         super().on_test_model_eval(*args, **kwargs)
         torch.set_grad_enabled(True)
@@ -113,10 +123,13 @@ class myNetLightningModuleMixin:
     def predict_step(self, batch, batch_idx, dataloader_idx=0):
         """Prediction step.
 
-        :param batch: Data batch
-        :param batch_idx: Batch index
-        :param dataloader_idx: Data loader index
-        :return: Prediction
+        Args:
+            batch: Data batch
+            batch_idx: Batch index
+            dataloader_idx: Data loader index
+
+        Returns:
+            Prediction
         """
         torch.set_grad_enabled(True)
         return self.step(batch)
@@ -142,18 +155,19 @@ class ModelLightningModule(myNetLightningModuleMixin, pl.LightningModule):
     ):
         """Init ModelLightningModule with key parameters.
 
-        :param model: Which type of the model for training
-        :param include_line_graph: whether to include line graphs
-        :param data_mean: average of training data
-        :param data_std: standard deviation of training data
-        :param loss: function used for training
-        :param optimizer: optimizer for training
-        :param scheduler: scheduler for training
-        :param lr: learning rate for training
-        :param decay_steps: number of steps for decaying learning rate
-        :param decay_alpha: parameter determines the minimum learning rate
-        :param sync_dist: whether sync logging across all GPU workers or not
-        :param kwargs: pass-through to parent init
+        Args:
+            model: Which type of the model for training
+            include_line_graph: Whether to include line graphs
+            data_mean: Average of training data
+            data_std: Standard deviation of training data
+            loss: Function used for training
+            optimizer: Optimizer for training
+            scheduler: Scheduler for training
+            lr: Learning rate for training
+            decay_steps: Number of steps for decaying learning rate
+            decay_alpha: Parameter determines the minimum learning rate
+            sync_dist: Whether sync logging across all GPU workers or not
+            **kwargs: Pass-through to parent init
         """
         super().__init__(**kwargs)
 
@@ -183,11 +197,14 @@ class ModelLightningModule(myNetLightningModuleMixin, pl.LightningModule):
             state_attr: torch.Tensor | None = None,
     ):
         """
-        :param g: dgl Graph
-        :param lat: lattice
-        :param l_g: Line graph
-        :param state_attr: State attribute
-        :return: Model prediction
+        Args:
+            g: dgl Graph
+            lat: Lattice
+            l_g: Line graph
+            state_attr: State attribute
+
+        Returns:
+            Model prediction
         """
         g.edata["lattice"] = torch.repeat_interleave(lat, g.batch_num_edges(), dim=0)
         g.edata["pbc_offshift"] = (g.edata["pbc_offset"].unsqueeze(dim=-1) * g.edata["lattice"]).sum(dim=1)
@@ -200,8 +217,11 @@ class ModelLightningModule(myNetLightningModuleMixin, pl.LightningModule):
 
     def step(self, batch: tuple):
         """
-        :param batch: Batch of training data
-        :return: results, batch_size
+        Args:
+            batch: Batch of training data
+
+        Returns:
+            results, batch_size
         """
         if self.include_line_graph:
             g, lat, l_g, state_attr, labels = batch
@@ -217,10 +237,13 @@ class ModelLightningModule(myNetLightningModuleMixin, pl.LightningModule):
 
     def loss_fn(self, loss: nn.Module, labels: torch.Tensor, preds: torch.Tensor):
         """
-        :param loss: Loss function
-        :param labels: Labels to compute the loss
-        :param preds: Predictions
-        :return: {"Total_Loss": total_loss, "MAE": mae, "RMSE": rmse}
+        Args:
+            loss: Loss function
+            labels: Labels to compute the loss
+            preds: Predictions
+
+        Returns:
+            {Total_Loss, MAE, RMSE}
         """
         scaled_pred = torch.reshape(preds * self.data_std + self.data_mean, labels.size())
         total_loss = loss(labels, scaled_pred)

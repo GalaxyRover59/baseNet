@@ -12,11 +12,11 @@ int_th = torch.int32
 
 def set_default_dtype(type_: str = "float", size: int = 32):
     """
-    Set the default dtype size (16, 32 or 64) for int or float used throughout matgl.
+    Set the default dtype size (16, 32 or 64) for int or float used throughout myNet.
 
     Args:
         type_: "float" or "int"
-        size: 32 or 64.
+        size: 32 or 64
     """
     if size in (16, 32, 64):
         globals()[f"{type_}_th"] = getattr(torch, f"{type_}{size}")
@@ -26,6 +26,6 @@ def set_default_dtype(type_: str = "float", size: int = 32):
         raise ValueError("Invalid dtype size")
     if type_ == "float" and size == 16 and not torch.cuda.is_available():
         raise Exception(
-            "torch.float16 is not supported for M3GNet because addmm_impl_cpu_ is not implemented"
+            "torch.float16 is not supported for myNet because addmm_impl_cpu_ is not implemented"
             " for this floating precision, please use size = 32, 64 or using 'cuda' instead !!"
         )

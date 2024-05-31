@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 import torch
 from torch import nn
 
-from myNet.graph.compute import compute_pair_vector_and_distance
 from myNet.layers import MLP
 
 # if TYPE_CHECKING:
@@ -38,17 +37,13 @@ class MLPNet(nn.Module):
     def forward(
             self,
             g,
-            state_attr: torch.Tensor | None = None,
-            l_g=None,
-            return_all_layer_output: bool = False,
     ):
         """
+        Args:
+            g: dgl Graph
 
-        :param g:
-        :param state_attr:
-        :param l_g:
-        :param return_all_layer_output:
-        :return:
+        Returns:
+            output: Output property for a batch of graphs
         """
         bond_embed = self.init0(dgl.readout_edges(g, "bond_vec", op='mean'))
         for block in self.MLPblock:
@@ -57,5 +52,5 @@ class MLPNet(nn.Module):
             if self.dropout:
                 bond_embed = self.dropout(bond_embed)
         out = torch.squeeze(self.out(bond_embed))
-        
+
         return out

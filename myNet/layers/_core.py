@@ -23,10 +23,11 @@ class MLP(nn.Module):
             bias_last: bool = True,
     ) -> None:
         """
-        :param dims: Dimensions of each layer of MLP.
-        :param activation: Activation function.
-        :param activate_last: Whether to apply activation to last layer.
-        :param bias_last: Whether to apply bias to last layer.
+        Args:
+            dims: Dimensions of each layer of MLP
+            activation: Activation function
+            activate_last: Whether to apply activation to last layer
+            bias_last: Whether to apply bias to last layer
         """
         super().__init__()
         self._depth = len(dims) - 1
@@ -55,7 +56,10 @@ class MLP(nn.Module):
 
     @property
     def last_linear(self) -> Linear | None:
-        """:return: The last linear layer."""
+        """
+        Returns:
+            The last linear layer
+        """
         for layer in reversed(self.layers):
             if isinstance(layer, Linear):
                 return layer
@@ -63,17 +67,26 @@ class MLP(nn.Module):
 
     @property
     def depth(self) -> int:
-        """Returns depth of MLP."""
+        """
+        Returns:
+            Depth of MLP
+        """
         return self._depth
 
     @property
     def in_features(self) -> int:
-        """Return input features of MLP."""
+        """
+        Returns:
+            Input features of MLP
+        """
         return self.layers[0].in_features
 
     @property
     def out_features(self) -> int:
-        """Returns output features of MLP."""
+        """
+        Returns:
+            Output features of MLP
+        """
         for layer in reversed(self.layers):
             if isinstance(layer, Linear):
                 return layer.out_features
@@ -81,8 +94,11 @@ class MLP(nn.Module):
 
     def forward(self, inputs):
         """
-        :param inputs: Input tensor
-        :return: Output tensor
+        Args:
+            inputs: Input tensor
+
+        Returns:
+            Output tensor
         """
         x = inputs
         for layer in self.layers:
