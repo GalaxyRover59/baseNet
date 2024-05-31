@@ -18,13 +18,7 @@ def compute_pair_vector_and_distance(g: dgl.DGLGraph) -> tuple[torch.Tensor, tor
         g: dgl Graph
 
     Returns:
-        bond distance between two atoms, vector from src node to dst node
-    """
-    """
-
-    :param g: DGL graph
-    :returns: bond_vec : 
-             bond_dist (torch.tensor): 
+        bond distance, vector from src node to dst node
     """
     dst_pos = g.ndata["pos"][g.edges()[1].type(torch.long)] + g.edata["pbc_offshift"]
     src_pos = g.ndata["pos"][g.edges()[0].type(torch.long)]

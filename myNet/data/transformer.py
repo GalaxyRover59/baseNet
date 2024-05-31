@@ -14,8 +14,11 @@ class Transformer(metaclass=abc.ABCMeta):
     def transform(self, data: torch.Tensor):
         """Transformation to be performed on data.
 
-        :param data: Input data
-        :return: Transformed data.
+        Args:
+            data: Input data
+
+        Returns:
+            Transformed data
         """
         raise NotImplementedError
 
@@ -23,8 +26,11 @@ class Transformer(metaclass=abc.ABCMeta):
     def inverse_transform(self, data: torch.Tensor):
         """Inverse transformation to be performed on data.
 
-        :param data: Input data
-        :return: Inverse-transformed data.
+        Args:
+            data: Input data
+
+        Returns:
+            Inverse-transformed data
         """
         raise NotImplementedError
 
@@ -34,25 +40,32 @@ class Normalizer(Transformer):
 
     def __init__(self, mean: float, std: float):
         """
-        :param mean: Mean of the data
-        :param std: Standard deviation of the data
+        Args:
+            mean: Mean of the data
+            std: Standard deviation of the data
         """
         self.mean = mean
         self.std = std
 
     def transform(self, data):
-        """z-score the data by subtracting the mean and dividing by the standard deviation.
+        """Z-score the data by subtracting the mean and dividing by the standard deviation.
 
-        :param data: Input data
-        :return: Scaled data
+        Args:
+            data: Input data
+
+        Returns:
+            Scaled data
         """
         return (data - self.mean) / self.std
 
     def inverse_transform(self, data):
         """Invert the scaling.
 
-        :param data: Scaled data
-        :return: Unscaled data
+        Args:
+            data: Scaled data
+
+        Returns:
+            Unscaled data
         """
         return data * self.std + self.mean
 
@@ -64,8 +77,11 @@ class Normalizer(Transformer):
     def from_data(cls, data):
         """Create Normalizer from data.
 
-        :param data: Input data
-        :return: Normalizer
+        Args:
+            data: Input data
+
+        Returns:
+            Normalizer
         """
         data = torch.tensor(data)
         return Normalizer(torch.mean(data), torch.std(data))
@@ -77,16 +93,22 @@ class LogTransformer(Transformer):
     def transform(self, data):
         """Take the log of the data.
 
-        :param data: Input data
-        :return: Scaled data
+        Args:
+            data: Input data
+
+        Returns:
+            Scaled data
         """
         return torch.log(data)
 
     def inverse_transform(self, data):
         """Invert the log (exp).
 
-        :param data: Input data
-        :return: exp(data)
+        Args:
+            data: Input data
+
+        Returns:
+            exp(data)
         """
         return torch.exp(data)
 

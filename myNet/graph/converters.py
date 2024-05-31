@@ -18,8 +18,11 @@ import myNet
 def get_element_list(train_structures: list[Structure | Molecule]) -> tuple[str, ...]:
     """Get the tuple of elements in the training set for atomic features.
 
-    :param train_structures: pymatgen Molecule/Structure object
-    :return: Tuple of elements covered in training set
+    Args:
+        train_structures: Pymatgen Molecule/Structure object
+
+    Returns:
+        Tuple of elements covered in training set
     """
     elements: set[str] = set()
     for s in train_structures:
@@ -33,8 +36,11 @@ class GraphConverter(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get_graph(self, structure) -> tuple[dgl.DGLGraph, torch.Tensor, list]:
         """
-        :param structure: input crystals or molecule
-        :return: DGLGraph object, state_attr
+        Args:
+            structure: Input crystals or molecule
+
+        Returns:
+            DGLGraph object, state_attr
         """
 
     def get_graph_from_processed_structure(
@@ -49,15 +55,18 @@ class GraphConverter(metaclass=abc.ABCMeta):
     ) -> tuple[dgl.DGLGraph, torch.Tensor, list]:
         """Construct a dgl graph from processed structure and bond information.
 
-        :param structure: Input crystals or molecule structure.
-        :param src_id: site indices for starting point of bonds.
-        :param dst_id: site indices for destination point of bonds.
-        :param images: the periodic image offsets for the bonds.
-        :param lattice_matrix: lattice information of the structure.
-        :param element_types: Element symbols of all atoms in the structure.
-        :param frac_coords: Fractional coordinates of all atoms in the structure.
-                            Note: Cartesian coordinates for molecule
-        :return: DGLGraph object, state_attr
+        Args:
+            structure: Input crystals or molecule structure
+            src_id: site indices for starting point of bonds
+            dst_id: site indices for destination point of bonds
+            images: Periodic image offsets for the bonds
+            lattice_matrix: Lattice information of the structure
+            element_types: Element symbols of all atoms in the structure
+            frac_coords: Fractional coordinates of all atoms in the structure
+                        (Note: Cartesian coordinates for molecule)
+
+        Returns:
+            DGLGraph object, lattice, state features
         """
         u, v = torch.tensor(src_id), torch.tensor(dst_id)
         g = dgl.graph((u, v), num_nodes=len(structure))
@@ -87,9 +96,10 @@ class Molecule2Graph(GraphConverter):
             cutoff: float = 5.0,
     ):
         """
-        :param element_types: List of elements present in dataset for graph conversion. This ensures all graphs are
-                              constructed with the same dimensionality of features.
-        :param cutoff: cutoff radius for graph representation
+        Args:
+            element_types: List of elements present in dataset for graph conversion. This ensures all graphs are
+                           constructed with the same dimensionality of features.
+            cutoff: Cutoff radius for graph representation
         """
         self.element_types = tuple(element_types)
         self.cutoff = cutoff
@@ -97,11 +107,12 @@ class Molecule2Graph(GraphConverter):
     def get_graph(self, mol: Molecule) -> tuple[dgl.DGLGraph, torch.Tensor, list]:
         """Get a DGL graph from an input molecule.
 
-        :param mol: pymatgen Molecule object
-        :return:
-            g: DGL graph
-            lat: default lattice for molecular systems (np.ones)
-            state_attr: state features
+        Args:
+            mol: Pymatgen Molecule object
+
+        Returns:
+            DGLGraph object, lattice, state features
+
         """
         natoms = len(mol)
         R = mol.cart_coords
@@ -135,9 +146,10 @@ class Structure2Graph(GraphConverter):
             cutoff: float = 5.0,
     ):
         """
-        :param element_types: List of elements present in dataset for graph conversion. This ensures all graphs are
-                              constructed with the same dimensionality of features.
-        :param cutoff: cutoff radius for graph representation
+        Args:
+            element_types: List of elements present in dataset for graph conversion. This ensures all graphs are
+                           constructed with the same dimensionality of features.
+            cutoff: Cutoff radius for graph representation
         """
         self.element_types = tuple(element_types)
         self.cutoff = cutoff
@@ -145,11 +157,11 @@ class Structure2Graph(GraphConverter):
     def get_graph(self, structure: Structure) -> tuple[dgl.DGLGraph, torch.Tensor, list]:
         """Get a DGL graph from an input Structure.
 
-        :param structure: pymatgen Structure object
-        :return:
-            g: DGL graph
-            lat: lattice for periodic systems
-            state_attr: state features
+        Args:
+            structure: Pymatgen Structure object
+
+        Returns:
+            DGLGraph object, lattice, state features
         """
         numerical_tol = 1.0e-8
         pbc = np.array([1, 1, 1], dtype=int)
@@ -193,9 +205,10 @@ class Atoms2Graph(GraphConverter):
     ):
         """Init Atoms2Graph from element types and cutoff radius.
 
-        :param element_types: List of elements present in dataset for graph conversion. This ensures all graphs are
-                              constructed with the same dimensionality of features.
-        :param cutoff: cutoff radius for graph representation
+        Args:
+            element_types: List of elements present in dataset for graph conversion. This ensures all graphs are
+                           constructed with the same dimensionality of features.
+            cutoff: Cutoff radius for graph representation
         """
         self.element_types = tuple(element_types)
         self.cutoff = cutoff
@@ -203,11 +216,11 @@ class Atoms2Graph(GraphConverter):
     def get_graph(self, atoms: Atoms) -> tuple[dgl.DGLGraph, torch.Tensor, list]:
         """Get a DGL graph from an input Atoms.
 
-        :param atoms: ase Atoms object
-        :return:
-            g: DGL graph
-            lat:
-            state_attr: state features
+        Args:
+            atoms: Ase Atoms object
+
+        Returns:
+            DGLGraph object, lattice, state features
         """
         numerical_tol = 1.0e-8
         pbc = np.array([1, 1, 1], dtype=int)

@@ -42,49 +42,25 @@ def collate_fn(batch, include_line_graph: bool = False, multiple_values_per_targ
     return g, lat, state_attr, labels
 
 
-# def collate_fn_efs(batch, include_stress: bool = True, include_line_graph: bool = False):
-#     """Merge a list of dgl graphs to form a batch."""
-#     l_g = None
-#     if include_line_graph:
-#         graphs, lattices, line_graphs, state_attr, labels = map(list, zip(*batch))
-#         l_g = dgl.batch(line_graphs)
-#     else:
-#         graphs, lattices, state_attr, labels = map(list, zip(*batch))
-#     g = dgl.batch(graphs)
-#     e = torch.tensor([d["energies"] for d in labels])  # type: ignore
-#     f = torch.vstack([d["forces"] for d in labels])  # type: ignore
-#     s = (
-#         torch.vstack([d["stresses"] for d in labels])  # type: ignore
-#         if include_stress is True
-#         else torch.tensor(np.zeros(e.size(dim=0)), dtype=myNet.float_th)
-#     )
-#     state_attr = torch.stack(state_attr)
-#     lat = torch.stack(lattices)
-#     if include_line_graph:
-#         return g, torch.squeeze(lat), l_g, state_attr, e, f, s
-#     return g, torch.squeeze(lat), state_attr, e, f, s
-
-
 def myDataLoader(
-    train_data: dgl.data.utils.Subset,
-    val_data: dgl.data.utils.Subset,
-    collate_fn: Callable,
-    test_data: dgl.data.utils.Subset = None,
-    **kwargs,
+        train_data: dgl.data.utils.Subset,
+        val_data: dgl.data.utils.Subset,
+        collate_fn: Callable,
+        test_data: dgl.data.utils.Subset = None,
+        **kwargs,
 ) -> tuple[GraphDataLoader, ...]:
-    """Dataloader for MatGL training.
+    """Dataloader for myNet training.
 
     Args:
-        train_data (dgl.data.utils.Subset): Training dataset.
-        val_data (dgl.data.utils.Subset): Validation dataset.
-        collate_fn (Callable): Collate function.
-        test_data (dgl.data.utils.Subset | None, optional): Test dataset. Defaults to None.
+        train_data: Training dataset
+        val_data: Validation dataset
+        collate_fn: Collate function
+        test_data: Test dataset (default: None)
         **kwargs: Pass-through kwargs to dgl.dataloading.GraphDataLoader. Common ones you may want to set are
             batch_size, num_workers, use_ddp, pin_memory and generator.
 
     Returns:
-        tuple[GraphDataLoader, ...]: Train, validation and test data loaders. Test data
-            loader is None if test_data is None.
+        Train, validation and test data loaders (test data loader is None if test_data is None)
     """
     train_loader = GraphDataLoader(train_data, shuffle=True, collate_fn=collate_fn, **kwargs)
 
@@ -99,35 +75,35 @@ class myDataset(DGLDataset):
     """Create a dataset including dgl graphs."""
 
     def __init__(
-        self,
-        filename: str = "dgl_graph.bin",
-        filename_lattice: str = "lattice.pt",
-        filename_line_graph: str = "dgl_line_graph.bin",
-        filename_state_attr: str = "state_attr.pt",
-        filename_labels: str = "labels.json",
-        include_line_graph: bool = False,
-        converter: GraphConverter | None = None,
-        threebody_cutoff: float | None = None,
-        structures: list | None = None,
-        labels: dict[str, list] | None = None,
-        name: str = "myDataset",
-        graph_labels: list[int | float] | None = None,
-        clear_processed: bool = False,
+            self,
+            filename: str = "dgl_graph.bin",
+            filename_lattice: str = "lattice.pt",
+            filename_line_graph: str = "dgl_line_graph.bin",
+            filename_state_attr: str = "state_attr.pt",
+            filename_labels: str = "labels.json",
+            include_line_graph: bool = False,
+            converter: GraphConverter | None = None,
+            threebody_cutoff: float | None = None,
+            structures: list | None = None,
+            labels: dict[str, list] | None = None,
+            name: str = "myDataset",
+            graph_labels: list[int | float] | None = None,
+            clear_processed: bool = False,
     ):
         """
         Args:
-            filename: file name for storing dgl graphs.
-            filename_lattice: file name for storing lattice matrixs.
-            filename_line_graph: file name for storing dgl line graphs.
-            filename_state_attr: file name for storing state attributes.
-            filename_labels: file name for storing labels.
-            include_line_graph: whether to include line graphs.
-            converter: dgl graph converter.
-            threebody_cutoff: cutoff for three body.
-            structures: Pymatgen structure.
-            labels: targets, as a dict of {name: list of values}.
-            name: name of dataset.
-            graph_labels: state attributes.
+            filename: File name for storing dgl graphs
+            filename_lattice: File name for storing lattice matrixs
+            filename_line_graph: File name for storing dgl line graphs
+            filename_state_attr: File name for storing state attributes
+            filename_labels: File name for storing labels
+            include_line_graph: Whether to include line graphs
+            converter: dgl graph converter
+            threebody_cutoff: Cutoff for three body
+            structures: Pymatgen structure
+            labels: Targets, as a dict of {name: list of values}
+            name: Name of dataset
+            graph_labels: State attributes
             clear_processed: Whether to clear the stored structures after processing into graphs. Structures
                 are not really needed after the conversion to DGL graphs and can take a significant amount of memory.
                 Setting this to True will delete the structures from memory.
