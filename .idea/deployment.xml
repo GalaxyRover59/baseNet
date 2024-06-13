@@ -5,7 +5,7 @@
       <paths name="ssLake cpumatgl">
         <serverdata>
           <mappings>
-            <mapping deploy="/myNet" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/baseNet" local="$PROJECT_DIR$/../baseNet" web="/" />
           </mappings>
         </serverdata>
       </paths>

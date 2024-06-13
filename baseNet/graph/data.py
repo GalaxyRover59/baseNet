@@ -14,11 +14,11 @@ from dgl.data.utils import load_graphs, save_graphs
 from dgl.dataloading import GraphDataLoader
 from tqdm import trange
 
-import myNet
-from myNet.graph.compute import compute_pair_vector_and_distance
+import baseNet
+from baseNet.graph.compute import compute_pair_vector_and_distance
 
 if TYPE_CHECKING:
-    from myNet.graph.converters import GraphConverter
+    from baseNet.graph.converters import GraphConverter
 
 
 def collate_fn(batch, include_line_graph: bool = False, multiple_values_per_target: bool = False):
@@ -32,7 +32,7 @@ def collate_fn(batch, include_line_graph: bool = False, multiple_values_per_targ
     labels = (
         torch.vstack([next(iter(d.values())) for d in labels])
         if multiple_values_per_target
-        else torch.tensor([next(iter(d.values())) for d in labels], dtype=myNet.float_th)
+        else torch.tensor([next(iter(d.values())) for d in labels], dtype=baseNet.float_th)
     )
     state_attr = torch.stack(state_attr)
     lat = lattices[0] if g.batch_size == 1 else torch.squeeze(torch.stack(lattices))
@@ -49,7 +49,7 @@ def myDataLoader(
         test_data: dgl.data.utils.Subset = None,
         **kwargs,
 ) -> tuple[GraphDataLoader, ...]:
-    """Dataloader for myNet training.
+    """Dataloader for baseNet training.
 
     Args:
         train_data: Training dataset
@@ -164,7 +164,7 @@ class myDataset(DGLDataset):
         if self.graph_labels is not None:
             state_attrs = torch.tensor(self.graph_labels).long()
         else:
-            state_attrs = torch.tensor(np.array(state_attrs), dtype=myNet.float_th)
+            state_attrs = torch.tensor(np.array(state_attrs), dtype=baseNet.float_th)
 
         if self.clear_processed:
             del self.structures
@@ -205,7 +205,7 @@ class myDataset(DGLDataset):
             self.graphs[idx],
             self.lattices[idx],
             self.state_attr[idx],
-            {k: torch.tensor(v[idx], dtype=myNet.float_th) for k, v in self.labels.items()},
+            {k: torch.tensor(v[idx], dtype=baseNet.float_th) for k, v in self.labels.items()},
         ]
         if self.include_line_graph:
             items.insert(2, self.line_graphs[idx])

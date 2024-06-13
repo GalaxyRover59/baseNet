@@ -11,10 +11,10 @@ from dgl.data.utils import split_dataset
 from pytorch_lightning.loggers import CSVLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
 
-from myNet.models import MLPNet
-from myNet.graph.data import myDataset, myDataLoader, collate_fn
-from myNet.graph.converters import get_element_list, Molecule2Graph
-from myNet.utils.training import ModelLightningModule
+from baseNet.models import MLPNet
+from baseNet.graph.data import myDataset, myDataLoader, collate_fn
+from baseNet.graph.converters import get_element_list, Molecule2Graph
+from baseNet.utils.training import ModelLightningModule
 
 data = pd.read_csv("qm9_sample.csv")
 
@@ -72,7 +72,7 @@ train_loader, val_loader, test_loader = myDataLoader(
 
 model = MLPNet([128, 1024, 100], dropout=0.05)
 lit_module = ModelLightningModule(model=model)
-logger = CSVLogger("./logs", name="myNet_test")
+logger = CSVLogger("./logs", name="baseNet_test")
 checkpoint_callback = ModelCheckpoint(monitor='val_Total_Loss', save_last=True)
 # early_stopping = EarlyStopping(monitor='val_Total_Loss', min_delta=0.0, patience=3, mode='min')
 trainer = pl.Trainer(max_epochs=4,
@@ -81,10 +81,10 @@ trainer = pl.Trainer(max_epochs=4,
                      callbacks=[checkpoint_callback])
 trainer.fit(model=lit_module, train_dataloaders=train_loader, val_dataloaders=val_loader)
 
-# print(myNet.int_th)
+# print(baseNet.int_th)
 
-from myNet.graph.data import myDataLoader
-from myNet.graph.compute import compute_pair_vector_and_distance
+from baseNet.graph.data import myDataLoader
+from baseNet.graph.compute import compute_pair_vector_and_distance
 compute_pair_vector_and_distance()
 myDataLoader()
 MLPNet()

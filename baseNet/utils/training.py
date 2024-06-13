@@ -1,4 +1,4 @@
-"""Utils for training myNet models."""
+"""Utils for training baseNet models."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from torch.optim import Optimizer
 
 
-class myNetLightningModuleMixin:
+class baseNetLightningModuleMixin:
     """Mix-in class implementing common functions for training."""
 
     def training_step(self, batch: tuple, batch_idx: int):
@@ -135,7 +135,7 @@ class myNetLightningModuleMixin:
         return self.step(batch)
 
 
-class ModelLightningModule(myNetLightningModuleMixin, pl.LightningModule):
+class ModelLightningModule(baseNetLightningModuleMixin, pl.LightningModule):
     """A PyTorch.LightningModule for training MLP models."""
 
     def __init__(

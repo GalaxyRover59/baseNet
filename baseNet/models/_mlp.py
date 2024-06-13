@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 import torch
 from torch import nn
 
-from myNet.layers import MLP
+from baseNet.layers import MLP
 
 # if TYPE_CHECKING:
 import dgl

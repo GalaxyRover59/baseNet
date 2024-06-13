@@ -8,7 +8,7 @@ import dgl
 import numpy as np
 import torch
 
-import myNet
+import baseNet
 
 
 def compute_pair_vector_and_distance(g: dgl.DGLGraph) -> tuple[torch.Tensor, torch.Tensor]:

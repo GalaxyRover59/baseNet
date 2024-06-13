@@ -24,7 +24,7 @@ from ase.md.nvtberendsen import NVTBerendsen
 from pymatgen.core.structure import Molecule, Structure
 from pymatgen.io.ase import AseAtomsAdaptor
 
-from myNet.graph.converters import Atoms2Graph
+from baseNet.graph.converters import Atoms2Graph
 
 if TYPE_CHECKING:
     import dgl

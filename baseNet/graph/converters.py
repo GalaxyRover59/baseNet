@@ -12,7 +12,7 @@ from ase import Atoms
 from pymatgen.core import Element, Molecule, Structure
 from pymatgen.optimization.neighbors import find_points_in_spheres
 
-import myNet
+import baseNet
 
 
 def get_element_list(train_structures: list[Structure | Molecule]) -> tuple[str, ...]:
@@ -70,9 +70,9 @@ class GraphConverter(metaclass=abc.ABCMeta):
         """
         u, v = torch.tensor(src_id), torch.tensor(dst_id)
         g = dgl.graph((u, v), num_nodes=len(structure))
-        pbc_offset = torch.tensor(images, dtype=myNet.float_th)
+        pbc_offset = torch.tensor(images, dtype=baseNet.float_th)
         g.edata["pbc_offset"] = pbc_offset
-        lattice = torch.tensor(np.array(lattice_matrix), dtype=myNet.float_th)
+        lattice = torch.tensor(np.array(lattice_matrix), dtype=baseNet.float_th)
         # Note: pbc_offshift and pos needs to be float64 to handle cases where bonds are exactly at cutoff
         element_to_index = {elem: idx for idx, elem in enumerate(element_types)}
         if isinstance(structure, (Structure, Molecule)):
@@ -81,9 +81,9 @@ class GraphConverter(metaclass=abc.ABCMeta):
             node_type = np.array([element_to_index[elem] for elem in structure.get_chemical_symbols()])
         else:
             raise TypeError('Input must be pymatgen Structure/Molecule object, or ase Atoms object')
-        g.ndata["node_type"] = torch.tensor(node_type, dtype=myNet.int_th)
-        g.ndata["frac_coords"] = torch.tensor(frac_coords, dtype=myNet.float_th)
-        state_attr = np.array([0.0, 0.0]).astype(myNet.float_np)
+        g.ndata["node_type"] = torch.tensor(node_type, dtype=baseNet.int_th)
+        g.ndata["frac_coords"] = torch.tensor(frac_coords, dtype=baseNet.float_th)
+        state_attr = np.array([0.0, 0.0]).astype(baseNet.float_np)
         return g, lattice, state_attr
 
 
