@@ -37,10 +37,12 @@ class MLPNet(nn.Module):
     def forward(
             self,
             g,
+            state_attr,
     ):
         """
         Args:
             g: dgl Graph
+            state_attr: State attribute
 
         Returns:
             output: Output property for a batch of graphs

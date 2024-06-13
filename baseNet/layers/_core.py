@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Callable
 
 import torch
 from torch import Tensor, nn
-from torch.nn import LSTM, Linear, Module, ModuleList
+from torch.nn import Linear, Module, ModuleList
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
