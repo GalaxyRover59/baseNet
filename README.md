@@ -1,5 +1,7 @@
 # baseNet
-A graph neural network project that only includes basic functions in PyTorch. Using Deep Graph Library(dgl) package.
+A graph neural network project that only includes basic functions in PyTorch, using Deep Graph Library(dgl) package.
+
+And this project draws inspiration from the [Materials Graph Library](https://github.com/materialsvirtuallab/matgl).
 
 ### DGL
 
@@ -7,7 +9,7 @@ A graph neural network project that only includes basic functions in PyTorch. Us
 See [Install from Conda or Pip](https://www.dgl.ai/pages/start.html).
 
 #### •User guide
-See [User Guide](https://docs.dgl.ai/en/1.1.x/guide/index.html). And the chineses version is [用户指南](https://docs.dgl.ai/en/1.1.x/guide_cn/index.html).
+See [User Guide](https://docs.dgl.ai/en/1.1.x/guide/index.html). The chineses version is [用户指南](https://docs.dgl.ai/en/1.1.x/guide_cn/index.html).
 
 
 

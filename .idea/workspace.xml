@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d60c3970-ee06-480e-ba9f-9a6d87700aeb" name="Changes" comment="update MLPNet forward function">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="d60c3970-ee06-480e-ba9f-9a6d87700aeb" name="Changes" comment="update MLPNet forward function" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -295,7 +293,7 @@
       <workItem from="1717140506023" duration="8296000" />
       <workItem from="1718266647367" duration="2449000" />
       <workItem from="1718269165092" duration="11131000" />
-      <workItem from="1718328482946" duration="10981000" />
+      <workItem from="1718328482946" duration="11619000" />
     </task>
     <task id="LOCAL-00001" summary="update MLPNet forward function">
       <created>1716135101048</created>
