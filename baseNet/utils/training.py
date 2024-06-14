@@ -36,7 +36,7 @@ class baseNetLightningModuleMixin:
             batch_size=batch_size,
             on_epoch=True,
             on_step=False,
-            prog_bar=True,
+            prog_bar=False,
             sync_dist=self.sync_dist,  # type: ignore
         )
 
@@ -63,7 +63,7 @@ class baseNetLightningModuleMixin:
             batch_size=batch_size,
             on_epoch=True,
             on_step=False,
-            prog_bar=True,
+            prog_bar=False,
             sync_dist=self.sync_dist,  # type: ignore
         )
         return results["Total_Loss"]
@@ -85,7 +85,7 @@ class baseNetLightningModuleMixin:
             batch_size=batch_size,
             on_epoch=True,
             on_step=False,
-            prog_bar=True,
+            prog_bar=False,
             sync_dist=self.sync_dist,  # type: ignore
         )
         return results
@@ -132,7 +132,7 @@ class baseNetLightningModuleMixin:
             Prediction
         """
         torch.set_grad_enabled(True)
-        return self.step(batch)
+        return self.step(batch, return_pred=True)
 
 
 class ModelLightningModule(baseNetLightningModuleMixin, pl.LightningModule):
@@ -215,10 +215,11 @@ class ModelLightningModule(baseNetLightningModuleMixin, pl.LightningModule):
             return self.model(g=g, l_g=l_g, state_attr=state_attr)
         return self.model(g, state_attr=state_attr)
 
-    def step(self, batch: tuple):
+    def step(self, batch: tuple, return_pred: bool = False):
         """
         Args:
             batch: Batch of training data
+            return_pred: Whether to return predictions and labels
 
         Returns:
             results, batch_size
@@ -231,8 +232,9 @@ class ModelLightningModule(baseNetLightningModuleMixin, pl.LightningModule):
             preds = self(g=g, lat=lat, state_attr=state_attr)
         results = self.loss_fn(loss=self.loss, preds=preds, labels=labels)  # type: ignore
         batch_size = preds.numel()
-        # results['targets'] = labels
-        # results['predictions'] = preds
+        if return_pred:
+            results['targets'] = labels
+            results['predictions'] = preds
         return results, batch_size
 
     def loss_fn(self, loss: nn.Module, labels: torch.Tensor, preds: torch.Tensor):

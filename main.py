@@ -16,6 +16,8 @@ from baseNet.graph.data import myDataset, myDataLoader, collate_fn
 from baseNet.graph.converters import get_element_list, Molecule2Graph
 from baseNet.utils.training import ModelLightningModule
 
+# print(baseNet.int_th)
+
 data = pd.read_csv("qm9_sample.csv")
 
 
@@ -72,13 +74,15 @@ train_loader, val_loader, test_loader = myDataLoader(
 
 model = MLPNet([128, 1024, 100], dropout=0.05)
 lit_module = ModelLightningModule(model=model)
-logger = CSVLogger("./logs", name="baseNet_test")
+logger = CSVLogger(".", name="logs")
 checkpoint_callback = ModelCheckpoint(monitor='val_Total_Loss', save_last=True)
 # early_stopping = EarlyStopping(monitor='val_Total_Loss', min_delta=0.0, patience=3, mode='min')
-trainer = pl.Trainer(max_epochs=4,
+trainer = pl.Trainer(max_epochs=10,
                      accelerator="cpu",
                      logger=logger,
                      callbacks=[checkpoint_callback])
 trainer.fit(model=lit_module, train_dataloaders=train_loader, val_dataloaders=val_loader)
 
-# print(baseNet.int_th)
+# prediction
+pred_res = trainer.predict(model=lit_module, dataloaders=test_loader)
+print(pred_res)
