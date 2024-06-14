@@ -31,9 +31,9 @@ Tools to convert materials representations from external packages to DGLGraphs.
 
 Currently convertible instances:
 
-• pymatgen: Structure, Molecule
+• [pymatgen](https://pymatgen.org/pymatgen.html): Structure, Molecule
 
-• ASE: Atoms
+• [ASE](https://wiki.fysik.dtu.dk/ase/ase/ase.html): Atoms
 
 ### data
 Tools to construct a dataset of DGL graphs.
