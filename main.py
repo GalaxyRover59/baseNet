@@ -73,6 +73,7 @@ train_loader, val_loader, test_loader = myDataLoader(
 )
 
 model = MLPNet([128, 1024, 100], dropout=0.05)
+# print(model)
 lit_module = ModelLightningModule(model=model)
 logger = CSVLogger(".", name="logs")
 checkpoint_callback = ModelCheckpoint(monitor='val_Total_Loss', save_last=True)
@@ -83,6 +84,6 @@ trainer = pl.Trainer(max_epochs=10,
                      callbacks=[checkpoint_callback])
 trainer.fit(model=lit_module, train_dataloaders=train_loader, val_dataloaders=val_loader)
 
-# prediction
-pred_res = trainer.predict(model=lit_module, dataloaders=test_loader)
-print(pred_res)
+# # prediction
+# pred_res = trainer.predict(model=lit_module, dataloaders=test_loader)
+# print(pred_res)

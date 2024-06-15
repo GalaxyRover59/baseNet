@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 import torch
 from torch import nn
+from dgl.nn import Set2Set
 
 from baseNet import DEFAULT_ELEMENTS
 from baseNet.layers import MLP, ActivationFunction, EmbeddingBlock
@@ -19,10 +20,12 @@ class MLPNet(nn.Module):
             self,
             dims,
             dim_node_embedding: int = 16,
-            activation_type: str = "softplus2",
+            activation_type: str = "softplus",
             activate_last: bool = False,
             bias_last: bool = True,
             n_layers: int = 3,
+            nlayers_set2set: int = 1,
+            niters_set2set: int = 2,
             dropout: float = 0.0,
             element_types: tuple[str, ...] = DEFAULT_ELEMENTS,
             cutoff: float = 4.0,
@@ -38,16 +41,21 @@ class MLPNet(nn.Module):
                 f"Invalid activation type, please try using one of {[af.name for af in ActivationFunction]}"
             ) from None
 
-        self.MLPblock = nn.ModuleList(
-            {
-                MLP(dims, activation, activate_last, bias_last)
-                for _ in range(n_layers)
-            }
+        self.embedding = EmbeddingBlock(
+            dim_node_embedding=dim_node_embedding,
+            ntypes_node=len(self.element_types),
+            activation=activation,
         )
+        self.MLPblock = nn.ModuleList(
+            [MLP([dim_node_embedding] + dims, activation, activate_last, bias_last)] + [
+                MLP([dims[-1]] + dims, activation, activate_last, bias_last)
+                for _ in range(n_layers - 1)
+            ]
+        )
+        s2s_kwargs = {"n_iters": niters_set2set, "n_layers": nlayers_set2set}
+        self.node_s2s = Set2Set(dims[-1], **s2s_kwargs)
         self.dropout = nn.Dropout(dropout) if dropout else None
-        self.init0 = MLP([3, dims[0]])
-        self.init1 = MLP([dims[-1], dims[0]])
-        self.out = MLP([dims[0], 1])
+        self.out = MLP([2 * dims[-1], 1])
 
     def forward(
             self,
@@ -62,15 +70,17 @@ class MLPNet(nn.Module):
         Returns:
             output: Output property for a batch of graphs
         """
-        bond_embed = self.init0(dgl.readout_edges(g, "bond_vec", op='mean'))
+        node_attr = g.ndata["node_type"]
+        node_feat = self.embedding(node_attr)
         for block in self.MLPblock:
-            out = block(bond_embed)
-            bond_embed = self.init1(out)
-            if self.dropout:
-                bond_embed = self.dropout(bond_embed)
-        out = torch.squeeze(self.out(bond_embed))
+            node_feat = block(node_feat)
 
-        return out
+        node_vec = self.node_s2s(g, node_feat)
+        if self.dropout:
+            node_vec = self.dropout(node_vec)
+        output = self.out(node_vec)
+
+        return torch.squeeze(output)
 
     def predict_structure(
             self,
