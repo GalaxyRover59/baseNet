@@ -10,9 +10,9 @@ from dgl.nn import Set2Set
 from baseNet import DEFAULT_ELEMENTS
 from baseNet.layers import MLP, ActivationFunction, EmbeddingBlock
 
-# if TYPE_CHECKING:
-import dgl
-from baseNet.graph.converters import GraphConverter
+if TYPE_CHECKING:
+    import dgl
+    from baseNet.graph.converters import GraphConverter
 
 
 class MLPNet(nn.Module):
@@ -30,6 +30,23 @@ class MLPNet(nn.Module):
             element_types: tuple[str, ...] = DEFAULT_ELEMENTS,
             cutoff: float = 4.0,
             **kwargs):
+        """
+
+        Args:
+            dims: Dimensions of each layer of MLP
+            dim_node_embedding: Dimension of node embedding
+            activation_type: Activation used for non-linearity
+            activate_last: Whether to apply activation to last layer
+            bias_last: Whether to apply bias to last layer
+            n_layers: Number of layers in MLP
+            nlayers_set2set: Number of layers in Set2Set layer
+            niters_set2set: Number of iterations in Set2Set layer
+            dropout: Randomly zeroes some elements in the input tensor with given probability (0 < x < 1) according to
+                a Bernoulli distribution. Defaults to 0, i.e., no dropout.
+            element_types: Elements included in the training set
+            cutoff: cutoff for forming bonds
+            **kwargs: For future flexibility. Not used at the moment.
+        """
         super().__init__()
         self.element_types = element_types or DEFAULT_ELEMENTS
         self.cutoff = cutoff
@@ -59,13 +76,15 @@ class MLPNet(nn.Module):
 
     def forward(
             self,
-            g,
-            state_attr,
+            g: dgl.DGLGraph,
+            state_attr: torch.Tensor | None = None,
+            **kwargs,
     ):
         """
         Args:
             g: dgl Graph
             state_attr: State attribute
+            **kwargs: For future flexibility. Not used at the moment.
 
         Returns:
             output: Output property for a batch of graphs
