@@ -6,10 +6,12 @@ from typing import TYPE_CHECKING
 import torch
 from torch import nn
 
+from baseNet import DEFAULT_ELEMENTS
 from baseNet.layers import MLP
 
 # if TYPE_CHECKING:
 import dgl
+from baseNet.graph.converters import GraphConverter
 
 
 class MLPNet(nn.Module):
@@ -21,8 +23,12 @@ class MLPNet(nn.Module):
             bias_last: bool = True,
             n_layers: int = 3,
             dropout: float = 0.0,
+            element_types: tuple[str, ...] = DEFAULT_ELEMENTS,
+            cutoff: float = 4.0,
             **kwargs):
         super().__init__()
+        self.element_types = element_types or DEFAULT_ELEMENTS
+        self.cutoff = cutoff
         self.MLPblock = nn.ModuleList(
             {
                 MLP(dims, activation, activate_last, bias_last)
@@ -56,3 +62,29 @@ class MLPNet(nn.Module):
         out = torch.squeeze(self.out(bond_embed))
 
         return out
+
+    def predict_structure(
+            self,
+            structure,
+            state_attr: torch.Tensor | None = None,
+            graph_converter: GraphConverter | None = None,
+    ):
+        """Convenience method to directly predict property from structure.
+
+        Args:
+            structure: An input crystal/molecule.
+            state_attr: Graph attributes
+            graph_converter: Object that implements a get_graph_from_structure.
+
+        Returns:
+            output: Output property
+        """
+        if graph_converter is None:
+            from baseNet.graph.converters import Structure2Graph
+
+            graph_converter = Structure2Graph(element_types=self.element_types, cutoff=self.cutoff)
+        g, lat, state_attr_default = graph_converter.get_graph(structure)
+        g.ndata["pos"] = g.ndata["frac_coords"] @ lat[0]
+        if state_attr is None:
+            state_attr = torch.tensor(state_attr_default)
+        return self(g=g, state_attr=state_attr).detach()
