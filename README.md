@@ -6,11 +6,11 @@ And this project draws inspiration from the [Materials Graph Library](https://gi
 
 ### ◇ DGL
 
-#### •Installation
+#### • Installation
 
 See [Install from Conda or Pip](https://www.dgl.ai/pages/start.html).
 
-#### •User guide
+#### • User guide
 
 See [User Guide](https://docs.dgl.ai/en/1.1.x/guide/index.html). The chineses version
 is [用户指南](https://docs.dgl.ai/en/1.1.x/guide_cn/index.html).
@@ -78,3 +78,15 @@ Implementation of various utility methods and classes.
 ### ◇ training
 
 Utils for training baseNet models.
+
+---
+
+# qm9_sample.csv
+
+128 samples
+from [QM9](https://figshare.com/collections/Quantum_chemistry_structures_and_properties_of_134_kilo_molecules/978904)
+dataset.
+
+struct_id | structure | energy
+---|---|---
+id in QM9 dataset|pymatgen Molecule| 0K energy (Hartree)
