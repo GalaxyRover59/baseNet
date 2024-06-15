@@ -7,7 +7,7 @@ import torch
 from torch import nn
 
 from baseNet import DEFAULT_ELEMENTS
-from baseNet.layers import MLP
+from baseNet.layers import MLP, ActivationFunction, EmbeddingBlock
 
 # if TYPE_CHECKING:
 import dgl
@@ -18,7 +18,8 @@ class MLPNet(nn.Module):
     def __init__(
             self,
             dims,
-            activation=None,
+            dim_node_embedding: int = 16,
+            activation_type: str = "softplus2",
             activate_last: bool = False,
             bias_last: bool = True,
             n_layers: int = 3,
@@ -29,6 +30,14 @@ class MLPNet(nn.Module):
         super().__init__()
         self.element_types = element_types or DEFAULT_ELEMENTS
         self.cutoff = cutoff
+
+        try:
+            activation: nn.Module = ActivationFunction[activation_type].value()
+        except KeyError:
+            raise ValueError(
+                f"Invalid activation type, please try using one of {[af.name for af in ActivationFunction]}"
+            ) from None
+
         self.MLPblock = nn.ModuleList(
             {
                 MLP(dims, activation, activate_last, bias_last)
