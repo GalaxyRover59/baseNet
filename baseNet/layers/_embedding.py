@@ -1,4 +1,4 @@
-"""Embedding node, edge and optional state attributes."""
+"""Embedding node (for simplicity, edge and optional state attributes are not included)."""
 
 from __future__ import annotations
 

@@ -1,34 +1,42 @@
 # baseNet
+
 A graph neural network project that only includes basic functions in PyTorch, using Deep Graph Library(dgl) package.
 
 And this project draws inspiration from the [Materials Graph Library](https://github.com/materialsvirtuallab/matgl).
 
-### DGL
+### ◇ DGL
 
 #### •Installation
+
 See [Install from Conda or Pip](https://www.dgl.ai/pages/start.html).
 
 #### •User guide
-See [User Guide](https://docs.dgl.ai/en/1.1.x/guide/index.html). The chineses version is [用户指南](https://docs.dgl.ai/en/1.1.x/guide_cn/index.html).
 
+See [User Guide](https://docs.dgl.ai/en/1.1.x/guide/index.html). The chineses version
+is [用户指南](https://docs.dgl.ai/en/1.1.x/guide_cn/index.html).
 
+---
 
-## data
+## ● data
+
 This package implements data manipulation tools.
 
 Include normalizer and log transformer currently.
 
+## ● ext
 
-
-## ext
 This package implements interfaces to external packages such as Pymatgen and the Atomic Simulation Environment.
 
+## ● graph
 
-
-## graph
 Package for creating and manipulating graphs.
 
-### converters
+### ◇ compute
+
+Computing various graph based operations.
+
+### ◇ converters
+
 Tools to convert materials representations from external packages to DGLGraphs.
 
 Currently convertible instances:
@@ -37,26 +45,36 @@ Currently convertible instances:
 
 • [ASE](https://wiki.fysik.dtu.dk/ase/ase/ase.html): Atoms
 
-### data
+### ◇ data
+
 Tools to construct a dataset of DGL graphs.
 
-### compute
-Computing various graph based operations.
+## ● layers
 
-
-
-## layers
 This package implements the layers for baseNet.
 
+### ◇ activations
 
+Integrate some activation functions.
 
-## models
+### ◇ core
+
+Implementations of multi-layer perceptron (MLP) and other helper classes.
+
+### ◇ embedding
+
+Embedding node.
+
+## ● models
+
 Package containing model implementations.
 
+As an example, build a model with MLP as the main body, called MLPNet.
 
+## ● utils
 
-## utils
 Implementation of various utility methods and classes.
 
-### training
+### ◇ training
+
 Utils for training baseNet models.
