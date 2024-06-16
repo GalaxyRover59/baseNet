@@ -16,8 +16,6 @@ from baseNet.graph.data import myDataset, myDataLoader, collate_fn
 from baseNet.graph.converters import get_element_list, Molecule2Graph
 from baseNet.utils.training import ModelLightningModule
 
-# print(baseNet.int_th)
-
 data = pd.read_csv("qm9_sample.csv")
 
 
@@ -47,7 +45,7 @@ molecules, mol_ids, energy, stress = load_dataset(data)
 elem_list = get_element_list(molecules)
 # setup a graph converter
 converter = Molecule2Graph(element_types=elem_list, cutoff=4.0)
-# convert the raw dataset into MEGNetDataset
+# convert the raw dataset into baseNetDataset
 mp_dataset = myDataset(
     structures=molecules,
     labels={
