@@ -45,7 +45,7 @@ molecules, mol_ids, energy, stress = load_dataset(data)
 elem_list = get_element_list(molecules)
 # setup a graph converter
 converter = Molecule2Graph(element_types=elem_list, cutoff=4.0)
-# convert the raw dataset into baseNetDataset
+# convert the raw dataset into baseNet Dataset
 mp_dataset = myDataset(
     structures=molecules,
     labels={
