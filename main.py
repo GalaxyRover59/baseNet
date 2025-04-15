@@ -77,7 +77,7 @@ logger = CSVLogger(".", name="logs")
 checkpoint_callback = ModelCheckpoint(monitor='val_Total_Loss', save_last=True)
 # early_stopping = EarlyStopping(monitor='val_Total_Loss', min_delta=0.0, patience=3, mode='min')
 trainer = pl.Trainer(max_epochs=5,
-                     accelerator="cpu",
+                     accelerator="cuda",
                      logger=logger,
                      callbacks=[checkpoint_callback])
 trainer.fit(model=lit_module, train_dataloaders=train_loader, val_dataloaders=val_loader)

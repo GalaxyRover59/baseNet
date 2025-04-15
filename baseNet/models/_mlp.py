@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 import torch
 from torch import nn
-from dgl.nn import Set2Set
+from dgl import softmax_nodes, sum_nodes
 
 from baseNet import DEFAULT_ELEMENTS
 from baseNet.layers import MLP, ActivationFunction, EmbeddingBlock
@@ -24,8 +24,6 @@ class MLPNet(nn.Module):
             activate_last: bool = False,
             bias_last: bool = True,
             n_layers: int = 3,
-            nlayers_set2set: int = 1,
-            niters_set2set: int = 2,
             dropout: float = 0.0,
             element_types: tuple[str, ...] = DEFAULT_ELEMENTS,
             cutoff: float = 4.0,
@@ -69,10 +67,8 @@ class MLPNet(nn.Module):
                 for _ in range(n_layers - 1)
             ]
         )
-        s2s_kwargs = {"n_iters": niters_set2set, "n_layers": nlayers_set2set}
-        self.node_s2s = Set2Set(dims[-1], **s2s_kwargs)
+        self.out = MLP([dims[-1], 1])
         self.dropout = nn.Dropout(dropout) if dropout else None
-        self.out = MLP([2 * dims[-1], 1])
 
     def forward(
             self,
@@ -94,10 +90,13 @@ class MLPNet(nn.Module):
         for block in self.MLPblock:
             node_feat = block(node_feat)
 
-        node_vec = self.node_s2s(g, node_feat)
         if self.dropout:
-            node_vec = self.dropout(node_vec)
-        output = self.out(node_vec)
+            node_feat = self.dropout(node_feat)
+        node_feat = self.out(node_feat)
+        g.ndata["e"] = node_feat
+        alpha = softmax_nodes(g, "e")
+        g.ndata["r"] = node_feat * alpha
+        output = sum_nodes(g, "r")
 
         return torch.squeeze(output)
 
